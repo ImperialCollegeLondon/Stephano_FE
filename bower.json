@@ -1,0 +1,30 @@
+{
+  "name": "Stephano_FE",
+  "version": "0.0.0",
+  "authors": [
+    "Chris I Powell <chris.i.powell@gmail.com>"
+  ],
+  "description": "The frontend for the Stephano Project",
+  "main": "index.html",
+  "keywords": [
+    "EARSS",
+    "Phylogenetics",
+    "population",
+    "genetics"
+  ],
+  "license": "AGPLv3",
+  "homepage": "http://www.spatialepidemiology.net/stephano",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "PhyloCanvas": "~1.2.2",
+    "bragv": "https://github.com/CIPowell/bragv.git"
+  }
+}
