@@ -1,7 +1,6 @@
 serve:
     - 'newer:less'
     - 'autoprefixer'
-    - 'node_server'
     - 'configureProxies'
     - 'connect'
     - 'open:dev'
@@ -12,22 +11,23 @@ build:
     - 'useminPrepare'
     - 'concat'
     - 'minify'
+    - 'uglify'
     - 'usemin'
     - 'bump:build'
-    
+
 prebuild-css:
     - 'less'
     - 'autoprefixer'
-    
+
 minify:
     - 'cssmin'
-    
-    
-prebuild-server:
-    - 'copy:server'
-    
+
+
+prebuild-html:
+    - 'copy:html'
+
 prebuild-templates:
     - 'copy:html'
-    
+
 prebuild-images:
     - 'copy:images'

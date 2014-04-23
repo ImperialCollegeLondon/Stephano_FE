@@ -1,10 +1,10 @@
 module.exports = {
         single_file : {
             options: {
-                browsers: ['last 2 version', 'Explorer 8']
+                browsers: ['last 3 versions']
             },
-            src: '.tmp/css/main.css',
-            dest: 'app/css/main.css'
+            src: 'app/.tmp/css/main.css',
+            dest: 'app/.tmp/css/main.css'
         }
 
 }

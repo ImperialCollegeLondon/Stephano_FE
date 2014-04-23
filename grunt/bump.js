@@ -1,5 +1,6 @@
 module.exports = {
     options:{
-        pushTo: 'origin'   
+        pushTo: 'origin',
+        push : false
     }
 }

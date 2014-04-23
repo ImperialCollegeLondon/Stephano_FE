@@ -25,6 +25,8 @@
   ],
   "dependencies": {
     "PhyloCanvas": "~1.2.2",
-    "bragv": "https://github.com/CIPowell/bragv.git"
+    "bragv": "https://github.com/CIPowell/bragv.git",
+    "jquery": "~2.1.0",
+    "jquery.ui": "~1.10.4"
   }
 }

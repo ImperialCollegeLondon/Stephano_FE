@@ -16,7 +16,10 @@ module.exports = {
         },
         files: [
             'app/index.html',
-            '**/*.less'
+            '**/*.less',
+            '**/*.css',
+            'app/js/*.js'
+
         ]
     }
 }

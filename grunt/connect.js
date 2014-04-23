@@ -17,7 +17,7 @@ module.exports ={
     },
     proxies: [
         {
-            context : '/',
+            context : '/api',
             host: 'localhost',
             port : 3000,
             https: false,
@@ -25,5 +25,5 @@ module.exports ={
             xforward: false,
         }
     ]
-    
+
 }
