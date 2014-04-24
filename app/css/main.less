@@ -2,9 +2,8 @@ body
 {
     font-family: arial, sans-serif;
     font-size: 12pt;
+    position: relative;
 
-    width: 100%;
-    height: 100%;
     margin: 1em;
 
     min-height : 600px;
@@ -76,16 +75,17 @@ section.main
     right: 0;
     left: 0;
 
-    padding: none;
-    margin: none;
+    padding: 0;
+    margin: 0 -1em;
     box-sizing: border-box;
 }
 
 .west, .east, .south
 {
     border: 1px solid #CCC;
-    margin: none;
+    margin: 0;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .west
@@ -113,4 +113,70 @@ section.main
     left: 0px;
     right: 0px;
     height: 50%;
+}
+
+button
+{
+    font-size :0.8em;
+    line-height: 1em;
+    text-decoration: none;
+    text-align: center;
+
+    display: inline-block;
+    background: linear-gradient(white, #ccc);
+    padding: 10px;
+    border-radius: 10px;
+    border : 1px solid #EEE;
+
+
+
+    cursor : pointer;
+
+    &:hover
+    {
+        background: white;
+    }
+}
+
+
+
+.pc-toolbar
+{
+    float:right;
+
+    z-index: 10;
+
+    button
+    {
+        display: block;
+    }
+}
+
+.btn-group
+{
+    ul
+    {
+        display: none;
+    }
+}
+
+.ui-slider
+{
+    background-color: white;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+}
+
+.ui-slider-handle
+{
+    background-color: #EEE;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    &:hover
+    {
+        background-color: white;
+    }
 }

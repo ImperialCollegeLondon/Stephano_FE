@@ -1,0 +1,8 @@
+{
+    "panels": {
+        "east":[{
+            "name" : "PhyloCanvas",
+            "id" : "tree"
+        }]
+    }
+}

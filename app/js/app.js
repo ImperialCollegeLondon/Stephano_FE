@@ -1,8 +1,9 @@
 // Depends on jQuery
 var Stephano = (function(){
     var App = function(){
-        this.configURl = './config.json';
+        this.configURL = './config.json';
         this.setHeader();
+        this.loadConfig();
 
         $('.west').resizable({
             resize: this.setSizesFromWest
@@ -17,7 +18,7 @@ var Stephano = (function(){
 
     App.prototype.loadConfig = function()
     {
-        var data = $.getJSON(this.configURL, this.loadConfigCallback.bind(this));
+        $.getJSON(this.configURL, {}, this.loadConfigCallback.bind(this));
     }
 
     App.prototype.loadConfigCallback = function(data)
@@ -25,7 +26,7 @@ var Stephano = (function(){
         this.config = data;
 
         this.loadPlugins();
-        this.selectDataSet();
+       // this.selectDataSet();
     }
 
     App.prototype.addElementWithText = function(parent, tagname, content)
@@ -53,7 +54,39 @@ var Stephano = (function(){
        {
             this.loadPanel(panel, this.config.panels[panel]);
        }
-    }
+    };
+
+    App.prototype.loadPanel = function(panel, cfg)
+    {
+        var panel = $('.' + panel);
+
+        if(cfg.length === 1)
+        {
+            this.loadPlugin(panel, cfg[0]);
+        }
+        else
+        {
+            this.createTabs(panel, cfg);
+            cfg.forEach(function(ele, idx){
+                this.loadPluginInTab(panel, ele, idx);
+            });
+        }
+    };
+
+    App.prototype.loadPlugin = function(panel, cfg)
+    {
+        panel.append('<div id="' + cfg.id + '" style="height:100%;"></div>');
+
+        var Plugin = Stephano.Plugins[cfg.name],
+            instance = new Plugin($('#' + cfg.id), cfg);
+
+
+    };
+
+    App.prototype.loadPluginInTab = function(panel, cfg, idx)
+    {
+
+    };
 
     App.prototype.setSizesFromWest = function(event, ui)
     {
@@ -69,6 +102,8 @@ var Stephano = (function(){
 
         south.height(ttlHeight - west.height() - 4);
 
+        $('.west, .east, .south').trigger('stephano_resize', {});
+
     };
 
     App.prototype.setSizesFromEast = function(event, ui)
@@ -80,6 +115,8 @@ var Stephano = (function(){
 
         west.height(east.height());
         south.height(ttlHeight - east.height() - 4);
+
+        $('.west, .east, .south').trigger('stephano_resize', {});
     };
 
     return { App: App, Plugins : {} };
