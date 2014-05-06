@@ -3,11 +3,13 @@ Stephano.Plugins.PhyloCanvas = (function(){
         /**
          * Check for jQuery
          */
-
         if(!$) {
             alert("JQuery not detected");
             return;
         }
+
+
+        this.div = div;
 
         /**
          * Check for PhyloCanvas
@@ -39,9 +41,11 @@ Stephano.Plugins.PhyloCanvas = (function(){
         });
 
         this.phylo = new PhyloCanvas.Tree(div[0]);
-
         var phy = this.phylo;
         phy.navigator = false;
+
+        phy.load(conf.datasource);
+
         $('#ns_slider').slider({
             min : 0,
             max: 10,
@@ -197,18 +201,19 @@ Stephano.Plugins.PhyloCanvas = (function(){
                 //$('.labels.button').addClass('selected');
             }
         });
+
+        this.resize_handler();
     };
 
     PCanvas.prototype.resize_handler = function(evt)
     {
-        var emt = $(evt.target);
-        this.phylo.setSize(emt.width() - 10, emt.height() - 2);
-
+        var emt = this.div.parent();
+        this.phylo.setSize(emt.innerWidth() - 4, emt.innerHeight() - 4);
     }
 
     PCanvas.prototype.load = function(url)
     {
-        this.phylo.load(location.origin + url, 'tree', 'newick');
+        this.phylo.load(url, 'tree', 'newick');
     };
 
     PCanvas.prototype.setColourAndShape = function(ids, colour, shape)

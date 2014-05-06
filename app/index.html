@@ -1,5 +1,7 @@
 <html>
     <head>
+        <title>Stephano</title>
+
         <!--build:css css/stephano.css-->
         <link rel="stylesheet" type="text/css" href="bower_components/jquery.ui/themes/base/jquery.ui.base.css" />
         <link rel="stylesheet" type="text/css" href="bower_components/jquery.ui/themes/base/jquery.ui.resizable.css" />
@@ -14,16 +16,18 @@
 
         </header>
         <section class="main">
-            <div class="west"></div>
-            <div class="east"></div>
-            <div class="south"></div>
+            <div id="west"></div>
+            <div id="east"></div>
+            <div id="south"></div>
         </section>
-        <div class="popup">
+        <div class="popup" id="dataset_selector">
             <section>
                 <h1>Dataset Selection</h1>
+                <p>Choose a dataset to display:</p>
             </section>
         </div>
 
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <!--build:js js/stephano.js-->
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/jquery.ui/ui/jquery.ui.core.js"></script>
@@ -36,6 +40,9 @@
         <script src="js/app.js"></script>
         <script src="js/main.js"></script>
         <script src="js/plugins/PhyloCanvas.js"></script>
+        <script src="js/plugins/googlemaps.js"></script>
+        <script src="js/plugins/Tabular.js"></script>
+        <script src="js/plugins/Labler.js"></script>
         <!--endbuild-->
     </body>
 </html>

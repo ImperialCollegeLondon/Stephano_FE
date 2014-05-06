@@ -1,19 +1,30 @@
 // Depends on jQuery
 var Stephano = (function(){
-    var App = function(){
-        this.configURL = './config.json';
-        this.setHeader();
-        this.loadConfig();
+    var dataset = "";
 
-        $('.west').resizable({
+    var App = function(){
+        this.setHeader();
+
+        if(dataset == "")
+        {
+            this.selectDataset();
+        }
+
+        $('#west').resizable({
             resize: this.setSizesFromWest
         });
 
-        $('.east').resizable({
+        $('#east').resizable({
             handles: 's',
             resize: this.setSizesFromEast
         });
 
+        $(window).on('resize', function(evt, ui){
+            if(evt.target == window)
+            {
+                this.setSizesFromWest.call(this, evt, ui);
+            }
+        }.bind(this));
     };
 
     App.prototype.loadConfig = function()
@@ -34,6 +45,7 @@ var Stephano = (function(){
         var ele = document.createElement(tagname);
         ele.appendChild(document.createTextNode(content));
         parent.appendChild(ele);
+        return ele;
     }
 
     App.prototype.emptyElement = function(ele)
@@ -44,21 +56,29 @@ var Stephano = (function(){
     App.prototype.setHeader = function(dataset_name)
     {
         var header = $('header')[0];
+
         this.emptyElement(header);
         this.addElementWithText(header, 'h1', 'Stephano');
+
+        var ds_ele = this.addElementWithText(header, 'button', 'Dataset : ' + (dataset_name || "Please Select"));
+        ds_ele.id = "btn_select_dataset";
+        ds_ele.type = "button";
+        ds_ele.addEventListener('click', this.selectDataset.bind(this));
+
+        this.dataset_button = ds_ele;
     }
 
     App.prototype.loadPlugins = function()
     {
-       for( var panel in this.config.panels )
+       for( var panel in this.config )
        {
-            this.loadPanel(panel, this.config.panels[panel]);
+            this.loadPanel(panel, this.config[panel]);
        }
     };
 
     App.prototype.loadPanel = function(panel, cfg)
     {
-        var panel = $('.' + panel);
+        var panel = $('#' + panel);
 
         if(cfg.length === 1)
         {
@@ -67,24 +87,85 @@ var Stephano = (function(){
         else
         {
             this.createTabs(panel, cfg);
-            cfg.forEach(function(ele, idx){
-                this.loadPluginInTab(panel, ele, idx);
-            });
         }
     };
 
+    App.prototype.createTabs = function(panel, config)
+    {
+        panel.addClass('tabs');
+        panel.append('<div class="tab-list"></div>');
+
+        for( var c = 0; c < config.length; c++ )
+        {
+            this.loadPlugin(panel, config[c]);
+        }
+
+        $('.tab-list .tab:first', panel).click();
+    }
+
+    App.prototype.addTab = function(panel,cfg)
+    {
+        $('.tab-list', panel).append('<button type="button" class="tab" id="tab-' + cfg.id + '" tab-id="' + cfg.id + '">' + cfg.name + '</button>');
+
+        $('#tab-' + cfg.id, panel).on('click', this.openTab_Handler);
+    }
+
+    App.prototype.openTab_Handler = function(evt){
+        var ele = $(this),
+            tab_id = $(this).attr('tab-id');
+
+        $('.active', ele.parent().parent()).removeClass('active');
+
+        ele.addClass('active');
+        $('#' + tab_id).addClass('active');
+
+    }
+
+    App.prototype.selectDataset = function()
+    {
+       $.getJSON('/api/datasets', this.loadDatasetCallback.bind(this));
+    }
+
+    App.prototype.loadDatasetCallback = function(data)
+    {
+        var popup = $('#dataset_selector');
+        $('button', popup).remove();
+
+        for (var i = 0; i < data.length; i++)
+        {
+            popup.append('<button id="' + data[i] + '" type="button" class="dataset">' + data[i] + '</button>');
+            $('button', popup).click(this.selectDatasetCallback.bind(this));
+        }
+
+        popup.show();
+    }
+
+    App.prototype.selectDatasetCallback = function(evt)
+    {
+        var dataset = evt.target.id;
+
+        this.configURL = '/api/' + dataset + '/config';
+        this.loadConfig();
+
+        $('#dataset_selector').hide();
+    }
+
+    App.prototype.addPluginContainer = function(panel, config)
+    {
+        panel.append('<div id="' + config.id + '" title="' + config.name + '" style="height:100%;" class="panel"></div>');
+    }
+
     App.prototype.loadPlugin = function(panel, cfg)
     {
-        panel.append('<div id="' + cfg.id + '" style="height:100%;"></div>');
+        this.addPluginContainer(panel, cfg)
 
-        var Plugin = Stephano.Plugins[cfg.name],
+        if( panel.hasClass('tabs') )
+        {
+            this.addTab(panel, cfg);
+        }
+
+        var Plugin = Stephano.Plugins[cfg.type],
             instance = new Plugin($('#' + cfg.id), cfg);
-
-
-    };
-
-    App.prototype.loadPluginInTab = function(panel, cfg, idx)
-    {
 
     };
 
@@ -93,30 +174,36 @@ var Stephano = (function(){
 
         var ttlWidth = $('.main').width(),
             ttlHeight = $('.main').height(),
-            west = $('.west'),
-            east = $('.east'),
-            south = $('.south');
+            west = $('#west'),
+            east = $('#east'),
+            south = $('#south');
 
-        east.width(ttlWidth - west.width() - 4);
-        east.height(west.height());
+        east.width(ttlWidth - west.outerWidth() - 6);
+        east.height(west.innerHeight());
 
-        south.height(ttlHeight - west.height() - 4);
+        var s_diff = south.innerHeight() - south.height();
 
-        $('.west, .east, .south').trigger('stephano_resize', {});
+        south.height(ttlHeight - east.outerHeight() - s_diff - 6);
 
+        $('#west, #east, #south').trigger('stephano_resize', {});
     };
 
     App.prototype.setSizesFromEast = function(event, ui)
     {
+
+
         var ttlHeight = $('.main').height(),
-            west = $('.west'),
-            east = $('.east'),
-            south = $('.south');
+            west = $('#west'),
+            east = $('#east'),
+            south = $('#south');
 
-        west.height(east.height());
-        south.height(ttlHeight - east.height() - 4);
+        west.height(east.innerHeight());
 
-        $('.west, .east, .south').trigger('stephano_resize', {});
+        var s_diff = south.innerHeight() - south.height();
+
+        south.height(ttlHeight - west.outerHeight() - s_diff - 6);
+
+        $('#west, #east, #south').trigger('stephano_resize', {});
     };
 
     return { App: App, Plugins : {} };

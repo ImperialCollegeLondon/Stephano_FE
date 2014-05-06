@@ -1,32 +1,86 @@
+/** Varialbles **/
+
+@border-color : #EEE;
+
+/** elements **/
+
 body
 {
-    font-family: arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
     font-size: 12pt;
     position: relative;
 
-    margin: 1em;
-
     min-height : 600px;
+    height: 100%;
 
     box-sizing: border-box;
+
+    color : #777;
+    margin: 0px;
+    padding: 0px;
 }
 
 header
 {
-    background: linear-gradient(white, #EEE);
+    background: linear-gradient(white, #EEF 75%, #DDF);
 
-    border-bottom: 1px solid #CCCCCC;
-    margin: -1em;
-    padding: 1em 1em;
+    position: relative;
 
-    height: 2em;
+    border-bottom: 2px solid #EEE;
+    padding: 1.2em 1em;
+
+    height: 4em;
+
+    box-sizing: border-box;
 
     h1
     {
         margin : 0;
         font-weight: 200;
+        text-shadow: -1px 1px white;
+        font-size: 1.5em;
+        vertical-align: middle;
     }
 }
+
+
+button
+{
+    font-size :0.8em;
+    line-height: 1em;
+    text-decoration: none;
+    text-align: center;
+
+    display: inline-block;
+    background: linear-gradient(white, #ccc);
+    padding: 10px;
+
+    border-radius: 10px;
+    border : 1px solid #EEE;
+
+    cursor : pointer;
+
+    &:hover
+    {
+        background: white;
+    }
+}
+
+canvas
+{
+    border: none; /* Canvas fix to deal with error in PhyloCanvas CSS */
+}
+
+/**
+    Generic Classes
+ */
+
+.hidden {display: none;}
+.visible-block {display: block;}
+
+/**
+    Specific Classes
+ */
 
 .popup
 {
@@ -55,7 +109,7 @@ header
 
     h1
     {
-        margin: -1em -1em;
+        margin: -1em -0.5em 1em;
         padding: 0.5em 0;
         border-bottom: 1px solid #CCC;
     }
@@ -67,7 +121,13 @@ header
 
 }
 
-section.main
+button.dataset
+{
+    font-size: 1.1em;
+    padding: 0.5em 2em;
+}
+
+.main
 {
     position: absolute;
     top: 4em;
@@ -76,19 +136,19 @@ section.main
     left: 0;
 
     padding: 0;
-    margin: 0 -1em;
+    margin: 0;
     box-sizing: border-box;
 }
 
-.west, .east, .south
+#west, #east, #south
 {
-    border: 1px solid #CCC;
+    border: 3px solid #FFF;
     margin: 0;
     box-sizing: border-box;
     overflow: hidden;
 }
 
-.west
+#west
 {
     position: absolute;
     top: 0;
@@ -97,7 +157,7 @@ section.main
     width: 50%;
 }
 
-.east
+#east
 {
     position: absolute;
     top: 0;
@@ -106,7 +166,7 @@ section.main
     width: 50%;
 }
 
-.south
+#south
 {
     position: absolute;
     bottom: 0px;
@@ -115,30 +175,87 @@ section.main
     height: 50%;
 }
 
-button
+.panel
 {
-    font-size :0.8em;
-    line-height: 1em;
-    text-decoration: none;
-    text-align: center;
+    border: 1px solid #CCC;
+    overflow: hidden;
+    box-sizing: border-box;
+}
 
-    display: inline-block;
-    background: linear-gradient(white, #ccc);
-    padding: 10px;
-    border-radius: 10px;
-    border : 1px solid #EEE;
+.tabs
+{
 
-
-
-    cursor : pointer;
-
-    &:hover
+    .panel
     {
-        background: white;
+        position: absolute;
+
+        top:2em;
+        bottom:0px;
+        left:1px;
+        right: 1px;
+
+        .hidden;
+
+        &.active
+        {
+            .visible-block;
+        }
     }
+
+    .tab-list
+    {
+        position: absolute;
+
+        left:0px;
+        right: 0px;
+        top : 0em;
+        height: 2em;
+
+        box-sizing: border-box;
+
+        padding:0px;
+        margin: 0px;
+
+        vertical-align: bottom;
+        overflow: hidden;
+
+    }
+
 }
 
 
+button.tab
+{
+    position: relative;
+
+    font-size: 1em;
+
+    display: inline-block;
+
+    padding: 0.5em 1em;
+    border : 1px solid @border-color;
+    box-sizing: border-box;
+    border-radius: 0;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+
+    background: #CCC;
+    color: #888;
+
+    margin: 0;
+
+    &.active
+    {
+        color: white;
+        background: linear-gradient(#77F, #00F);
+    }
+
+}
+
+canvas.phylocanvas
+{
+    border: 1px solid;
+}
 
 .pc-toolbar
 {
@@ -178,5 +295,36 @@ button
     &:hover
     {
         background-color: white;
+    }
+}
+
+
+
+#btn_select_dataset
+{
+    position: absolute;
+    right : 0px;
+    top : 0px;
+    bottom : 0px;
+
+    margin: 0px;
+
+    background: transparent;
+    border: none;
+    border-radius: 0px;
+    border-left: 3px solid white;
+
+    transition : all 0.5s ease;
+
+    color: #777;
+    text-shadow: -1px 1px white;
+
+    font-size: 1em;
+
+    &:hover
+    {
+        background: #66F;
+        color:white;
+        text-shadow: -1px 1px black;
     }
 }
