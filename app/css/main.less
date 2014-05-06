@@ -84,9 +84,7 @@ canvas
 
 .popup
 {
-    position: fixed;
-    top : 50%;
-    left: 50%;
+    position: relative;
 
     display: none;
 
@@ -94,18 +92,25 @@ canvas
 
     width: 50%;
     height: 50%;
+
     min-height: 10em;
 
-    margin: -25% 0 0 -25%;
+    margin: auto;
 
-    background: white;
+    section
+    {
+        display: block;
+        position: relative;
 
-    border: 1px solid #CCC;
-    border-radius: 2em;
+        background: rgba(255, 255, 255,1);
 
-    padding: 1em;
+        border: 1px solid #CCC;
+        border-radius: 2em;
 
-    box-shadow: 1.5em 1.5em rgba(0,0,0,0.4);
+        padding: 1em;
+
+        z-index: 100;
+    }
 
     h1
     {
@@ -114,12 +119,24 @@ canvas
         border-bottom: 1px solid #CCC;
     }
 
-    &.show
-    {
-        display: block;
-    }
+}
+
+.popup:before
+{
+
+
+    position: fixed;
+    top:0;
+    right:0;
+    left: 0;
+    bottom:0;
+
+    content: ' ';
+
+    background: rgba(0,0,0,0.4);
 
 }
+
 
 button.dataset
 {

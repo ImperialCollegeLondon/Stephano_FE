@@ -7,7 +7,7 @@ var Stephano = (function(){
 
         if(dataset == "")
         {
-            this.selectDataset();
+            this.openSelectDatasetDialog();
         }
 
         $('#west').resizable({
@@ -63,13 +63,16 @@ var Stephano = (function(){
         var ds_ele = this.addElementWithText(header, 'button', 'Dataset : ' + (dataset_name || "Please Select"));
         ds_ele.id = "btn_select_dataset";
         ds_ele.type = "button";
-        ds_ele.addEventListener('click', this.selectDataset.bind(this));
+        ds_ele.addEventListener('click', this.openSelectDatasetDialog.bind(this));
 
         this.dataset_button = ds_ele;
     }
 
     App.prototype.loadPlugins = function()
     {
+        $('.panel, .tab-list').remove();
+        $('.tabs').removeClass('tabs');
+
        for( var panel in this.config )
        {
             this.loadPanel(panel, this.config[panel]);
@@ -121,20 +124,22 @@ var Stephano = (function(){
 
     }
 
-    App.prototype.selectDataset = function()
+    App.prototype.openSelectDatasetDialog = function()
     {
        $.getJSON('/api/datasets', this.loadDatasetCallback.bind(this));
     }
 
     App.prototype.loadDatasetCallback = function(data)
     {
-        var popup = $('#dataset_selector');
-        $('button', popup).remove();
+        var popup = $('#dataset_selector'),
+            popup_content = $('section', popup);
+
+        $('button', popup_content).remove();
 
         for (var i = 0; i < data.length; i++)
         {
-            popup.append('<button id="' + data[i] + '" type="button" class="dataset">' + data[i] + '</button>');
-            $('button', popup).click(this.selectDatasetCallback.bind(this));
+            popup_content.append('<button id="' + data[i] + '" type="button" class="dataset">' + data[i] + '</button>');
+            $('button', popup_content).click(this.selectDatasetCallback.bind(this));
         }
 
         popup.show();
@@ -142,8 +147,11 @@ var Stephano = (function(){
 
     App.prototype.selectDatasetCallback = function(evt)
     {
-        var dataset = evt.target.id;
+        this.selectDataset(evt.target.id);
+    }
 
+    App.prototype.selectDataset = function(dataset)
+    {
         this.configURL = '/api/' + dataset + '/config';
         this.loadConfig();
 
