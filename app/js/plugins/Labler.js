@@ -9,8 +9,7 @@ Stephano.Plugins.labeler = function(div, conf){
     this.load(conf.datasource);
 };
 
-Stephano.Plugins.labeler.prototype = {
-    load: function(url)
+Stephano.Plugins.labeler.prototype.load = function(url)
     {
 
         if(!url.match(/^https?:/))
@@ -19,35 +18,28 @@ Stephano.Plugins.labeler.prototype = {
         }
         var ctx = this;
 
-        $.getJSON(url, function(data){
-            if(typeof data != 'object')
-            {
-                data = JSON.parse(data);
-            }
-
-             ctx.drawcontrols(data);
-
-        });
+        $.getJSON(url, this.drawControls.bind(this));
 
 
         $('#content').on('unsubset', $.proxy(function(evt)
         {
             if(this.cur_label) this.relabel(this.cur_label);
         }, this));
-    },
+    };
+
     /**
      * @param data {array} the data to be drawn;
      */
-    drawcontrols: function(data_)
+Stephano.Plugins.labeler.prototype.drawControls = function(data_)
     {
-        this.fields = data_;
+        this.fields = {};
         var div = this.jqele,c_div,l_div,data;
 
         div.append('<div class="row-fluid"><div class="span6 colour"><h4>Colour by: This will colour points on the map and also tree nodes.</h4><div class="General"></div></div><div class="span6 labels"><h4>Labels:  This will display text next to nodes on tree</h4><div class="General"></div></div></div>');
         c_div = $('.colour', div);
         l_div =  $('.labels', div);
 
-        for( var grp in this.fields )
+        for( var grp in data_)
         {
             var grp_cls = grp.replace(/[\s\/\\]/gi, '_');
 
@@ -57,40 +49,57 @@ Stephano.Plugins.labeler.prototype = {
                 l_div.append('<div class="' + grp_cls + '"><h5>' + grp + '</h5></div>');
             }
 
-            data = this.fields[grp];
+            data = data_[grp];
 
             for( var i = 0; i < data.length; i++ )
             {
+                if(this.fields[data[i].name]) throw "duplicate field";
+
+                this.fields[data[i].name] = data[i];
+
                 if ( data[i].type == "label" )
                 {
-                    $('.' + grp_cls, l_div).append('<a class="btn ' + (data[i].name == this.conf.colourField ? 'btn-primary' : '') + '" id="' + this.jqele.attr('id') + '_' + data[i].name + '" href="javascript:app.plugins[\'' + this.jqele.attr('id') + '\'].relabel(' + JSON.stringify(data[i]).replace(/"/g, '\'') +')">' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</a>');
+                    $('.' + grp_cls, l_div).append('<button class="btn ' + (data[i].name == this.conf.colourField ? 'selected' : '') + '" id="' + data[i].name + '">' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</button>');
                 }
                 else
                 {
-                    $('.' + grp_cls, c_div).append('<a class="btn ' + (data[i].name == this.conf.colourField ? 'btn-primary' : '') + '" id="' + this.jqele.attr('id') + '_' + data[i].name + '" href="javascript:app.plugins[\'' + this.jqele.attr('id') + '\'].relabel(' + JSON.stringify(data[i]).replace(/"/g, '\'') +')">' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</a>');
+                    $('.' + grp_cls, c_div).append('<button class="btn ' + (data[i].name == this.conf.colourField ? 'selected' : '') + '" id="' +  data[i].name + '" >' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</button>');
                 }
             }
 
-            if(!$('.' + grp_cls + ' a', l_div).length) $('.' + grp_cls , l_div).remove();
-            if(!$('.' + grp_cls + ' a', c_div).length) $('.' + grp_cls , c_div).remove();
+            if(!$('.' + grp_cls + ' button', l_div).length) $('.' + grp_cls , l_div).remove();
+            if(!$('.' + grp_cls + ' button', c_div).length) $('.' + grp_cls , c_div).remove();
         }
-    },
-    relabel : function(obj)
+
+        $('button', div).click(this.clickHandler.bind(this));
+
+    };
+
+Stephano.Plugins.labeler.prototype.clickHandler = function(evt)
+{
+    var field_id = evt.target.id,
+        obj = this.fields[field_id];
+
+    this.relabel(obj);
+
+}
+
+Stephano.Plugins.labeler.prototype.relabel = function(obj)
     {
-        var ctx = this;
-        var url = this.conf.urlbase;
+        var ctx = this,
+            url = this.conf.urlbase,
+            dataset = this.dataset;
 
         this.cur_label = obj;
 
         if(!url.match(/^https?:/))
         {
-            url = location.origin + '/' + dataset + '/' + url + obj.name;
+            url = location.origin  + url + obj.name;
         }
 
         if(obj.type == 'label')
         {
-            var wkr = this.app.worker;
-            wkr.ajax(url, function(data){
+            $.getJSON(url, function(data){
                 if(typeof data != 'object')
                 {
                     data = JSON.parse(data);
@@ -123,8 +132,7 @@ Stephano.Plugins.labeler.prototype = {
                 olpar.removeClass('btn-primary');
             }
 
-            var wkr = this.app.worker;
-            wkr.ajax(url, function(data){
+            $.getJSON(url, function(data){
                 if(typeof data != 'object')
                 {
                     data = JSON.parse(data);
@@ -147,8 +155,8 @@ Stephano.Plugins.labeler.prototype = {
             {
                 olpar.removeClass('btn-primary');
             }
-            var wkr = this.app.worker;
-            wkr.ajax(url, function(data){
+
+            $.getJSON(url, function(data){
                 if(typeof data != 'object')
                 {
                     data = JSON.parse(data);
@@ -173,9 +181,4 @@ Stephano.Plugins.labeler.prototype = {
         {
 
         }
-
-
-
-
-    }
-};
+    };

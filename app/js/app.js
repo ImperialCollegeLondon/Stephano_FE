@@ -60,9 +60,15 @@ var Stephano = (function(){
         this.emptyElement(header);
         this.addElementWithText(header, 'h1', 'Stephano');
 
-        var ds_ele = this.addElementWithText(header, 'button', 'Dataset : ' + (dataset_name || "Please Select"));
+        var ds_ele = this.addElementWithText(header, 'button', 'Dataset : '),
+            ds_name = this.addElementWithText(ds_ele, 'span', 'Please select');
+
         ds_ele.id = "btn_select_dataset";
         ds_ele.type = "button";
+
+        ds_name.className = "dataset_name";
+
+        ds_ele.appendChild(ds_name);
         ds_ele.addEventListener('click', this.openSelectDatasetDialog.bind(this));
 
         this.dataset_button = ds_ele;
@@ -154,6 +160,8 @@ var Stephano = (function(){
     {
         this.configURL = '/api/' + dataset + '/config';
         this.loadConfig();
+
+        $('.dataset_name').text(dataset);
 
         $('#dataset_selector').hide();
     }
