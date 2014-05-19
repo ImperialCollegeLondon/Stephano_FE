@@ -113,7 +113,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
         {
             if(typeof nids == 'string') nids = nids.split(',');
 
-            $('#content').trigger({
+            $(document.body).trigger({
                 type : 'subset',
                 nodeIds : nids,
                 source: 'phylocanvas'
@@ -122,28 +122,27 @@ Stephano.Plugins.PhyloCanvas = (function(){
 
         this.phylo.originalTreeRedrawn = function()
         {
-            $('#content').trigger({
+            $(document.body).trigger({
                 type : 'unsubset',
                 source: 'phylocanvas'
             });
         };
 
         var plo = this;
-        $('#content').on('colour', function(evt)
+        $(document.body).on('colour', function(evt)
         {
             plo.setColourAndShape(evt.ids, evt.colour, evt.shape);
         });
 
-        $('#content').on('selected', function(evt)
+        $(document.body).on('selected', function(evt)
         {
             if(evt.source != 'phylocanvas')
             {
                 plo.phylo.selectNodes(evt.nodeIds.join(','));
-                console.debug(evt.source);
             }
         });
 
-        $('#content').on('relabel', function(evt)
+        $(document.body).on('relabel', function(evt)
         {
 
             var data = evt.stuff;
