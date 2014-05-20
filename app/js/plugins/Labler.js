@@ -152,14 +152,16 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
                 for(var key in data)
                 {
                     var colour = Stephano.COLOURS[i % c_length],
-                        shape = Stephano.SHAPES[Math.round(i/c_length) % s_length];
+                        shape = Stephano.SHAPES[Math.round(i/c_length) % s_length],
+                        map_shape = Stephano.MAP_SHAPES[Math.round(i/c_length) % s_length];
 
 
                     ctx.jqele.trigger({
                         type : 'colour',
                         ids : data[key],
                         colour: colour,
-                        shape: shape
+                        shape: shape,
+                        map_shape : map_shape
                     });
 
                     i++;
@@ -186,10 +188,10 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
                 }
 
                 var colour_list = {
-                        positive : { colour : 'rgba(16, 238,0, 1)', shape : 'circle' },
-                        negative : { colour : 'rgba(255, 47, 43, 1)', shape : 'circle' },
-                        other :  { colour : 'rgba(100, 100, 100, 1)', shape : 'circle' },
-                        both :  { colour : 'rgba(255, 255, 0, 1)', shape : 'circle' }
+                        positive : { colour : 'rgba(16, 238,0, 1)', shape : 'circle', map_shape : 'o' },
+                        negative : { colour : 'rgba(255, 47, 43, 1)', shape : 'circle', map_shape : 'o'  },
+                        other :  { colour : 'rgba(100, 100, 100, 1)', shape : 'circle', map_shape : 'o'  },
+                        both :  { colour : 'rgba(255, 255, 0, 1)', shape : 'circle', map_shape : 'o'  }
                     }
 
                 for( var raw_key in data )
@@ -209,6 +211,7 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
                         ids : data[raw_key],
                         colour : colour_list[key].colour,
                         shape: colour_list[key].shape,
+                        map_shape: colour_list[key].map_shape,
                         field: obj.name,
                         pos_neg: key,
                         colour_list : colour_list

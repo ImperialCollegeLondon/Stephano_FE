@@ -94,23 +94,26 @@ Stephano.Plugins.googlemaps = function(div, conf){
     $(document.body).on('selected', function(evt)
     {
         var nids = evt.nodeIds;
+
+        if(! evt.source) return;
+
         if(!nids || nids == '')
         {
             gmp.clearFilter();
             return;
         }
+
+        var n = nids.length;
+
         gmp.filter(function(mkr)
         {
+
+
             if( nids.length == 1 && nids[0] == "" ) return true;
 
-            var n = nids.length;
-            var ni = mkr.ids.length;
             for( var i = n; i--; )
             {
-                for( var j = ni; j--; )
-                {
-                    if( mkr.ids[j] == nids[i] ) return true;
-                }
+                if( mkr.ids.indexOf(nids[i]) !== -1 ) return true;
             }
             return false;
         });
@@ -118,7 +121,7 @@ Stephano.Plugins.googlemaps = function(div, conf){
 
     $(document.body).on('colour', function(evt)
     {
-        gmp.setColourAndShape(evt.ids, evt.colour, evt.shape, evt.field, evt.pos_neg, evt.colour_list);
+        gmp.setColourAndShape(evt.ids, evt.colour, evt.map_shape, evt.field, evt.pos_neg, evt.colour_list);
     });
 
     $(document.body).on('resize', function()
@@ -273,8 +276,6 @@ Stephano.Plugins.googlemaps.prototype = {
     },
     setColourAndShape : function(ids, colour, shape, field, pos_neg, colour_list)
     {
-
-        console.debug(field);
         if (!ids) return;
         for(var i = 0; i < ids.length; i++)
         {
@@ -298,12 +299,10 @@ Stephano.Plugins.googlemaps.prototype = {
                     {
                         this.markers[this.markerIds[ids[i]]][field] = 'both';
 
-                        console.debug('both - colour');
                         if(colour_list['both'])
                         {
-                            console.debug('both - found colour');
                             if(colour_list.both.colour)this.markers[this.markerIds[ids[i]]].colour = colour_list.both.colour;
-                            if(colour_list.both.shape)this.markers[this.markerIds[ids[i]]]._shape = colour_list.both.shape;
+                            if(colour_list.both.shape)this.markers[this.markerIds[ids[i]]]._shape = colour_list.both.map_shape;
                         }
                     }
                     else

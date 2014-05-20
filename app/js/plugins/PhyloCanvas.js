@@ -98,16 +98,22 @@ Stephano.Plugins.PhyloCanvas = (function(){
         this.phylo.selectedColor = "rgba(255,128,50,1)";
         this.phylo.rightClickZoom = true;
 
-        this.phylo.onselected = function(nids)
+        this.phylo.addListener('selected', function(evt)
         {
+            var nids = evt.nodeIds;
+
+            evt.preventDefault();
+            evt.bubbles = false;
             if(typeof nids == 'string') nids = nids.split(',');
 
-            $(div).trigger({
+            $(document.body).trigger({
                 type : 'selected',
                 nodeIds : nids,
                 source: 'phylocanvas'
             });
-        };
+
+            return false;
+        });
 
         this.phylo.onredrawtree = function(nids)
         {
@@ -133,14 +139,14 @@ Stephano.Plugins.PhyloCanvas = (function(){
         {
             plo.setColourAndShape(evt.ids, evt.colour, evt.shape);
         });
-
-        $(document.body).on('selected', function(evt)
-        {
-            if(evt.source != 'phylocanvas')
-            {
-                plo.phylo.selectNodes(evt.nodeIds.join(','));
-            }
-        });
+//
+//        $(document.body).on('selected', function(evt)
+//        {
+//            if(evt.source != 'phylocanvas')
+//            {   console.debug('NO!');
+//                plo.phylo.selectNodes(evt.nodeIds);
+//            }
+//        });
 
         $(document.body).on('relabel', function(evt)
         {
