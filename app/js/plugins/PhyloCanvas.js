@@ -110,8 +110,11 @@ Stephano.Plugins.PhyloCanvas = (function(){
             return false;
         });
 
-        this.phylo.onredrawtree = function(nids)
+        this.phylo.addListener('subtree', function(evt)
         {
+
+            var nids = this.phylo.root.getChildIds();
+
             if(typeof nids == 'string') nids = nids.split(',');
 
             $(document.body).trigger({
@@ -119,7 +122,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
                 nodeIds : nids,
                 source: 'phylocanvas'
             });
-        };
+        }.bind(this));
 
         this.phylo.originalTreeRedrawn = function()
         {
