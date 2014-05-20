@@ -276,6 +276,7 @@ Stephano.Plugins.googlemaps.prototype = {
     },
     setColourAndShape : function(ids, colour, shape, field, pos_neg, colour_list)
     {
+
         if (!ids) return;
         for(var i = 0; i < ids.length; i++)
         {
@@ -304,10 +305,6 @@ Stephano.Plugins.googlemaps.prototype = {
                             if(colour_list.both.colour)this.markers[this.markerIds[ids[i]]].colour = colour_list.both.colour;
                             if(colour_list.both.shape)this.markers[this.markerIds[ids[i]]]._shape = colour_list.both.map_shape;
                         }
-                    }
-                    else
-                    {
-                        console.debug(c_field, pos_neg);
                     }
                 }
                 // end of binary colouring code

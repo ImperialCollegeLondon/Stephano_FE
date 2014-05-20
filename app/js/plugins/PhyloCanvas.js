@@ -26,7 +26,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
 
         div.html('<div style="position:absolute;bottom:3em;height:1em;left:0;padding:0.2em;z-index:100;">Node size :   <div id="ns_slider" style="display: inline-block;width:18em;"></div></div><div style="position:absolute;bottom:1.5em;height:1em;left:0;padding:0.2em;z-index:100;">  Label size : <div id="ls_slider" style="display: inline-block;width:18em;"></div> </div><div class="pc-toolbar"><button type="button" class="reset btn">Redraw original tree</button><button type="button" class="labels btn" name="labels" >Show Labels</button>' +
                     '<div class="btn-group">'+
-                        '<button type="button" class="btn dropdown-toggle" data-toggle="dropdown">Tree Type <span class="caret"></span></button>' +
+                        '<button type="button" class="btn dropdown-toggle" data-toggle="dropdown">Tree Type </button>' +
                         '<ul class="dropdown-menu">' +
                             '<li><a class="rect" href="javascript:void(0);">Rectangular</a></li>' +
                             '<li><a class="circ" href="javascript:void(0);">Circular</a></li>' +
@@ -34,11 +34,6 @@ Stephano.Plugins.PhyloCanvas = (function(){
                         '</ul>'+
                     '</div></div>');
 
-        $('.dropdown-toggle').on('click', function(evt)
-        {
-            $('.dropdown-menu', this.parent()).addClass('show');
-
-        });
 
         this.phylo = new PhyloCanvas.Tree(div[0]);
         var phy = this.phylo;
@@ -164,20 +159,26 @@ Stephano.Plugins.PhyloCanvas = (function(){
             plo.phylo.displayLabels();
         });
 
-        $('.rect', div).click(function(){
+        $('.rect', div).click(function(evt){
             plo.phylo.setTreeType('rectangular');
             $('.button').removeClass('selected');
             $('.rect').addClass('selected');
-        });
-        $('.circ', div).click(function(){
+
+             $(evt.target).parents('ul').removeClass('expanded');
+        }.bind(this));
+        $('.circ', div).click(function(evt){
             plo.phylo.setTreeType('circular');
             $('.button').removeClass('selected');
             $('.circ').addClass('selected');
+
+            $(evt.target).parents('ul').removeClass('expanded');
         });
-        $('.rad', div).click(function(){
+        $('.rad', div).click(function(evt){
             plo.phylo.setTreeType('radial');
             $('.button').removeClass('selected');
             $('.rad').addClass('selected');
+
+            $(evt.target).parents('ul').removeClass('expanded');
         });
         $('.reset', div).click(function(){
             plo.phylo.redrawOriginalTree();
@@ -207,6 +208,8 @@ Stephano.Plugins.PhyloCanvas = (function(){
             }
         });
 
+        $('.btn-group [data-toggle=dropdown]').click(this.dropdownToggle.bind(this));
+
         this.resize_handler();
     };
 
@@ -225,6 +228,19 @@ Stephano.Plugins.PhyloCanvas = (function(){
     {
         this.phylo.setNodeColourAndShape(ids, colour, shape, 7);
     };
+
+    PCanvas.prototype.dropdownToggle = function(evt)
+    {
+           var container = $(evt.target).parent(),
+               list = $('ul.dropdown-menu', container);
+
+            list.toggleClass('expanded');
+
+            evt.preventDefault();
+            evt.stopPropagation();
+
+            $(document.body).one('click', function(){ list.removeClass('expanded'); });
+    }
 
     return PCanvas;
 }());
