@@ -5,9 +5,16 @@ var Stephano = (function(){
     var App = function(){
         this.setHeader();
 
-        if(dataset == "")
+        var qry =this.parseQuery();
+        dataset = qry.dataset
+
+        if( ! dataset )
         {
             this.openSelectDatasetDialog();
+        }
+        else
+        {
+            this.selectDataset(dataset);
         }
 
         $('#west').resizable({
@@ -51,6 +58,23 @@ var Stephano = (function(){
     App.prototype.emptyElement = function(ele)
     {
         while( ele.hasChildNodes() ) { ele.removeChild(ele.childNodes[0]) }
+    }
+
+    App.prototype.parseQuery = function()
+    {
+        var query_string = location.search.substr(1), //get rid of the question mark
+            pair_strings = query_string.split('&'),
+            pair,
+            query = {};
+
+        for ( var i = 0; i < pair_strings.length; i++ )
+        {
+            pair = pair_strings[i].split('=');
+            query[pair[0]] = pair[1];
+        }
+
+        return query;
+
     }
 
     App.prototype.setHeader = function(dataset_name)
