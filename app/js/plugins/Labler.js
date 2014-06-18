@@ -188,8 +188,8 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
                 }
 
                 var colour_list = {
-                        positive : { colour : 'rgba(16, 238,0, 1)', shape : 'circle', map_shape : 'o' },
-                        negative : { colour : 'rgba(255, 47, 43, 1)', shape : 'circle', map_shape : 'o'  },
+                        positive : { colour : 'rgba(255, 47, 43, 1)', shape : 'circle', map_shape : 'o' },
+                        negative : { colour : 'rgba(16, 238,0, 1)', shape : 'circle', map_shape : 'o'  },
                         other :  { colour : 'rgba(100, 100, 100, 1)', shape : 'circle', map_shape : 'o'  },
                         both :  { colour : 'rgba(255, 255, 0, 1)', shape : 'circle', map_shape : 'o'  }
                     }
