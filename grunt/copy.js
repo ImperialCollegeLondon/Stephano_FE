@@ -6,7 +6,7 @@ module.exports = {
         files: [{ expand : true, cwd: 'app/css', src: ['font/.*'], dest : 'dist/css'}]
     },
     images:{
-        files: [{expand : true, cwd: 'app/images', src:['*.png', '*.jpg'], dest: 'dist/images'}]
+        files: [{expand : true, cwd: 'app/images', src:['*.png', '*.jpg','*.svg'], dest: 'dist/images'}]
     }
 
 }
