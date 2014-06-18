@@ -290,7 +290,7 @@ Stephano.Plugins.googlemaps.prototype = {
                 {
                     var c_field = this.markers[this.markerIds[ids[i]]][field];
 
-                    if(!c_field)
+                    if(!c_field || c_field == pos_neg)
                     {
                         this.markers[this.markerIds[ids[i]]][field] = pos_neg;
                         if(colour)this.markers[this.markerIds[ids[i]]].colour = colour;
