@@ -35,7 +35,7 @@ Stephano.Plugins.labeler.prototype.drawControls = function(data_)
         this.fields = {};
         var div = this.jqele,c_div,l_div,data;
 
-        div.append('<div class="row-fluid"><div class="span6 colour"><h4>Colour by: This will colour points on the map and also tree nodes.</h4><div class="General"></div></div><div class="span6 labels"><h4>Labels:  This will display text next to nodes on tree</h4><div class="General"></div></div></div>');
+        div.append('<div class="row-fluid"><div class="group colour"><h4>Colour by: This will colour points on the map and also tree nodes.</h4><div class="General"></div></div><div class="group labels"><h4>Labels:  This will display text next to nodes on tree</h4><div class="General"></div></div></div>');
         c_div = $('.colour', div);
         l_div =  $('.labels', div);
 

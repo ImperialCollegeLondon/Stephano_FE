@@ -24,7 +24,7 @@ Stephano.Plugins.googlemaps = function(div, conf){
         center : new google.maps.LatLng(0,0),
         zoom : 1,
         mapTypeId : google.maps.MapTypeId.ROADMAP,
-        overviewMapControl: true,
+        overviewMapControl: false,
         overviewMapControlOptions: {
             opened : true
         }
