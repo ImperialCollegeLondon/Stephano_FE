@@ -18,12 +18,14 @@ var Stephano = (function(){
         }
 
         $('#west').resizable({
-            resize: this.setSizesFromWest
+            resize: this.setSizesFromWest,
+            maxHeight: this.getMaxPanelHeight()
         });
 
         $('#east').resizable({
             handles: 's',
-            resize: this.setSizesFromEast
+            resize: this.setSizesFromEast,
+            maxHeight: this.getMaxPanelHeight()
         });
 
         $(window).on('resize', function(evt, ui){
@@ -141,6 +143,11 @@ var Stephano = (function(){
         $('.tab-list', panel).append('<button type="button" class="tab" id="tab-' + cfg.id + '" tab-id="' + cfg.id + '">' + cfg.name + '</button>');
 
         $('#tab-' + cfg.id, panel).on('click', this.openTab_Handler);
+    }
+
+    App.prototype.getMaxPanelHeight = function()
+    {
+        return $('.main').height() - 50;
     }
 
     App.prototype.openTab_Handler = function(evt){
