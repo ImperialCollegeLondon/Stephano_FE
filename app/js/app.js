@@ -218,8 +218,8 @@ var Stephano = (function(){
             east = $('#east'),
             south = $('#south');
 
-        east.width(ttlWidth - west.outerWidth() - 6);
-        east.height(west.innerHeight());
+        east.width(ttlWidth - west.outerWidth());
+        east.height(west.innerHeight() - 20);
 
         var s_diff = south.innerHeight() - south.height();
 
@@ -237,7 +237,7 @@ var Stephano = (function(){
             east = $('#east'),
             south = $('#south');
 
-        west.height(east.innerHeight());
+        west.height(east.innerHeight() - 20);
 
         var s_diff = south.innerHeight() - south.height();
 

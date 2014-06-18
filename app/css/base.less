@@ -1,0 +1,80 @@
+body
+{
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+	font-size: 12pt;
+	position: relative;
+
+	min-height : 600px;
+	height: 100%;
+
+	box-sizing: border-box;
+
+	color : #777;
+	margin: 0px;
+	padding: 0px;
+}
+
+header
+{
+	background: linear-gradient(white, #EEF 75%, #DDF);
+
+	position: relative;
+
+	border-bottom: 2px solid #EEE;
+	padding: 1.2em 1em;
+
+	height: 4em;
+
+	box-sizing: border-box;
+
+	h1
+	{
+		margin : 0;
+		font-weight: 200;
+		text-shadow: -1px 1px white;
+		font-size: 1.5em;
+		vertical-align: middle;
+	}
+}
+
+
+button
+{
+	font-size :0.8em;
+	line-height: 1em;
+	text-decoration: none;
+	text-align: center;
+
+	display: inline-block;
+	background: linear-gradient(white, #ccc);
+	padding: 10px;
+
+	border-radius: 10px;
+	border : 1px solid #EEE;
+
+	cursor : pointer;
+
+	&:hover
+	{
+		background: white;
+	}
+}
+
+canvas
+{
+	border: none; /* Canvas fix to deal with error in PhyloCanvas CSS */
+}
+
+table
+{
+	width : 100%;
+	border-collapse: collapse;
+	color: black;
+}
+
+th, td
+{
+	text-align: left;
+	border: 1px solid @border-color;
+	padding: 0.5em;
+}
