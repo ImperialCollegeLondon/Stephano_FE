@@ -45,7 +45,7 @@ button
 	text-align: center;
 
 	display: inline-block;
-	background: linear-gradient(white, #ccc);
+	background:  #eee;
 	padding: 10px;
 
 	border-radius: 10px;
@@ -53,9 +53,17 @@ button
 
 	cursor : pointer;
 
+	transition : 1s all ease;
+
 	&:hover
 	{
 		background: white;
+	}
+
+	&.selected
+	{
+		background: blue;
+		color: white;
 	}
 }
 

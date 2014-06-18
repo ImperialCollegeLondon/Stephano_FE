@@ -83,7 +83,11 @@ Stephano.Plugins.labeler.prototype.drawControls = function(data_)
 Stephano.Plugins.labeler.prototype.clickHandler = function(evt)
 {
     var field_id = evt.target.id,
-        obj = this.fields[field_id];
+        obj = this.fields[field_id],
+        btn = $(evt.target);
+
+    $('.selected', btn.parents('.group')).removeClass('selected');
+    btn.addClass('selected');
 
     this.relabel(obj);
 
