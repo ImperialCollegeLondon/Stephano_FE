@@ -38,6 +38,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
         this.phylo = new PhyloCanvas.Tree(div[0]);
         var phy = this.phylo;
         phy.navigator = false;
+        phy.history_collapsed = true;
 
         phy.load(conf.datasource);
 
