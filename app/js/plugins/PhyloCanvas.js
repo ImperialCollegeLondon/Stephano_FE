@@ -35,7 +35,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
                     '</div></div>');
 
 
-        this.phylo = new PhyloCanvas.Tree(div[0]);
+        this.phylo = new PhyloCanvas.Tree(div[0], {history_collapsed : true});
         var phy = this.phylo;
         phy.navigator = false;
         phy.history_collapsed = true;
@@ -63,8 +63,6 @@ Stephano.Plugins.PhyloCanvas = (function(){
             },
             value : 10
         });
-
-
 
         if(conf.treeType)
         {

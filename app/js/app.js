@@ -19,13 +19,15 @@ var Stephano = (function(){
 
         $('#west').resizable({
             resize: this.setSizesFromWest,
-            maxHeight: this.getMaxPanelHeight()
+            maxHeight: this.getMaxPanelHeight(),
+            maxWidth : this.getMaxPanelWidth()
         });
 
         $('#east').resizable({
             handles: 's',
             resize: this.setSizesFromEast,
-            maxHeight: this.getMaxPanelHeight()
+            maxHeight: this.getMaxPanelHeight(),
+            maxWidth : this.getMaxPanelWidth()
         });
 
         $(window).on('resize', function(evt, ui){
@@ -148,6 +150,11 @@ var Stephano = (function(){
     App.prototype.getMaxPanelHeight = function()
     {
         return $('.main').height() - 50;
+    }
+
+    App.prototype.getMaxPanelWidth = function()
+    {
+        return $('.main').width() - 50;
     }
 
     App.prototype.openTab_Handler = function(evt){
