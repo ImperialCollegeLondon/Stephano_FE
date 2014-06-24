@@ -123,13 +123,13 @@ Stephano.Plugins.PhyloCanvas = (function(){
             });
         }.bind(this));
 
-        this.phylo.originalTreeRedrawn = function()
+        this.phylo.addListener('redraw_original', function()
         {
             $(document.body).trigger({
                 type : 'unsubset',
                 source: 'phylocanvas'
             });
-        };
+        });
 
         var plo = this;
         $(document.body).on('colour', function(evt)

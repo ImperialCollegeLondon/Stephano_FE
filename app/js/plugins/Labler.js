@@ -14,7 +14,7 @@ Stephano.Plugins.labeler.prototype.load = function(url)
 
         if(!url.match(/^https?:/))
         {
-            url = location.origin + url;
+            url = '//' + location.host + url;
         }
         var ctx = this;
 
@@ -104,7 +104,7 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
 
         if(!url.match(/^https?:/))
         {
-            url = location.origin  + url + obj.name;
+            url = '//' + location.host  + url + obj.name;
         }
 
         if(obj.type == 'label')
@@ -229,5 +229,26 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
         else if(obj.type == 'hg')
         {
 
+        }
+    };
+
+    Stephano.Plugins.labeler.prototype.getImageGrid = function(canvas)
+    {
+        var colours = ['rgba(255, 47, 43, 1)','rgba(16, 238,0, 1)','rgba(100, 100, 100, 1)','rgba(255, 255, 0, 1)'], shapes = Stephano.MAP_SHAPES;
+
+        for( var i = 0; i < shapes.length; i++ )
+        {
+            for ( var j = 0; j < colours.length; j++ )
+            {
+
+                var img = new Image();
+                img.top = i * 13;
+                img.left = j * 18;
+                img.onload = function() {
+                    canvas.drawImage(this, this.top, this.left, 15, 22);
+                }
+                img.src = '/markers/point?shape=' + shapes[i] + '&colour=' + colours[j];
+
+            }
         }
     };

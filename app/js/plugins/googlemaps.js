@@ -207,16 +207,26 @@ Stephano.Plugins.googlemaps.prototype = {
     load : function(url)
     {
         //console.debug('googlemaps loading ' + url);
-        $.ajax(location.origin + url,{
+        $.ajax('//' + location.host + url,{
             success : function(data, x, y)
             {
+                if(typeof data == 'string') data = JSON.parse(data);
+
                 this.markers = [];
                 var feats = data.features,
                     bounds = new google.maps.LatLngBounds();
 
+
                 for(var i = 0; i < feats.length; i++)
                 {
-                    var pos = feats[i].geometry.coordinates;
+                    var pos = feats[i].geometry.coordinates,
+                        iconSize = new google.maps.Size(13, 18),
+                        iconOrigin = new google.maps.Point(0,0),
+                        icon ={
+                            url:'/images/mapmarkers.png',
+                            size : iconSize,
+                            origin : iconOrigin
+                        };
 
                     if(!this.bubble_ids[pos[1] + ',' + pos[0]])
                     {
@@ -228,8 +238,11 @@ Stephano.Plugins.googlemaps.prototype = {
                                 map : this.map,
                                 id : feats[i].properties.Isolate,
                                 ids : [feats[i].properties.Isolate],
-                                country : feats[i].country
+                                country : feats[i].country,
+                                icon : icon
                             });
+
+
 
                         if(!bounds.contains(ll)) bounds.extend(ll);
 
@@ -252,6 +265,7 @@ Stephano.Plugins.googlemaps.prototype = {
 
                 this.map.fitBounds(bounds);
                 this.updateClusterer();
+
             },
             context: this
         });
@@ -284,39 +298,56 @@ Stephano.Plugins.googlemaps.prototype = {
 
             if(this.markers[this.markerIds[ids[i]]])
             {
-
+                var mkr =  this.markers[this.markerIds[ids[i]]], icon = mkr.getIcon();
+                icon.origin = new google.maps.Point(0, 0);
                 // code for binary colouring
                 if(field && pos_neg && colour_list)
                 {
                     var c_field = this.markers[this.markerIds[ids[i]]][field];
 
+                    icon.url = "/images/mapmarker_pos_neg.png";
+
                     if(!c_field || c_field == pos_neg)
                     {
                         this.markers[this.markerIds[ids[i]]][field] = pos_neg;
-                        if(colour)this.markers[this.markerIds[ids[i]]].colour = colour;
-                        if(shape)this.markers[this.markerIds[ids[i]]]._shape = shape;
+                        if(pos_neg == 'positive')
+                        {
+                            icon.origin = new google.maps.Point(0, 0 * 18);
+                        }
+                        else if(pos_neg == 'negative')
+                        {
+                            icon.origin = new google.maps.Point(0, 1 * 18);
+                        }
+                        else
+                        {
+                            icon.origin = new google.maps.Point(0, 2 * 18);
+                        }
+
                     }
                     else if(c_field != 'other' && c_field != 'other' && c_field != pos_neg)
                     {
                         this.markers[this.markerIds[ids[i]]][field] = 'both';
-
-                        if(colour_list['both'])
-                        {
-                            if(colour_list.both.colour)this.markers[this.markerIds[ids[i]]].colour = colour_list.both.colour;
-                            if(colour_list.both.shape)this.markers[this.markerIds[ids[i]]]._shape = colour_list.both.map_shape;
-                        }
+                        icon.origin = new google.maps.Point(0, 3 * 18);
                     }
+
+
+
+
                 }
                 // end of binary colouring code
                 else
                 {
                     if(colour) this.markers[this.markerIds[ids[i]]].colour = colour;
                     if(shape) this.markers[this.markerIds[ids[i]]]._shape = shape;
+                    icon.origin = new google.maps.Point(Stephano.MAP_SHAPES.indexOf(mkr._shape) * 13, Stephano.COLOURS.indexOf(mkr.colour) * 18);
+                    icon.url = "/images/mapmarkers.png"
                 }
 
-                this.markers[this.markerIds[ids[i]]].setIcon(new google.maps.MarkerImage('http://' + this.imagebase + '/markers/point?colour=' + this.markers[this.markerIds[ids[i]]].colour +
-                        '&shape=' + this.markers[this.markerIds[ids[i]]]._shape,
-                        new google.maps.Size(22, 32), new google.maps.Point(0,0), new google.maps.Point(7.5, 22), new google.maps.Size(15, 22)));
+
+                mkr.setIcon(icon);
+            //    this.markers[this.markerIds[ids[i]]].setIcon(new google.maps.MarkerImage('http://' + this.imagebase + '/markers/point?colour=' + this.markers[this.markerIds[ids[i]]].colour +
+            //            '&shape=' + this.markers[this.markerIds[ids[i]]]._shape,
+            //            new google.maps.Size(22, 32), new google.maps.Point(0,0), new google.maps.Point(7.5, 22), new google.maps.Size(15, 22)));
             }
         }
         if(this.clusterer) this.clusterer.repaint();

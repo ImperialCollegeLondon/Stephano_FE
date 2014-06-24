@@ -4,6 +4,7 @@ var Stephano = (function(){
 
     var App = function(){
         this.setHeader();
+        this.modules = {};
 
         var qry =this.parseQuery();
         dataset = qry.dataset
@@ -83,7 +84,7 @@ var Stephano = (function(){
 
     App.prototype.setHeader = function(dataset_name)
     {
-        var header = $('header')[0];
+        var header = $('.header')[0];
 
         this.emptyElement(header);
         this.addElementWithText(header, 'h1', 'Stephano');
@@ -119,7 +120,7 @@ var Stephano = (function(){
 
         if(cfg.length === 1)
         {
-            this.loadPlugin(panel, cfg[0]);
+            this.modules[cfg[0].id] = this.loadPlugin(panel, cfg[0]);
         }
         else
         {
@@ -134,7 +135,7 @@ var Stephano = (function(){
 
         for( var c = 0; c < config.length; c++ )
         {
-            this.loadPlugin(panel, config[c]);
+            this.modules[config[c].id] = this.loadPlugin(panel, config[c]);
         }
 
         $('.tab-list .tab:first', panel).click();
@@ -176,7 +177,7 @@ var Stephano = (function(){
     App.prototype.loadDatasetCallback = function(data)
     {
         var popup = $('#dataset_selector'),
-            popup_content = $('section', popup);
+            popup_content = $('div', popup);
 
         $('button', popup_content).remove();
 
@@ -221,6 +222,8 @@ var Stephano = (function(){
         var Plugin = Stephano.Plugins[cfg.type],
             instance = new Plugin($('#' + cfg.id), cfg);
 
+        return instance;
+
     };
 
     App.prototype.setSizesFromWest = function(event, ui)
@@ -259,6 +262,14 @@ var Stephano = (function(){
 
         $('#west, #east, #south').trigger('stephano_resize', {});
     };
+
+    App.prototype.popupImageGrid = function()
+    {
+        $(document.body).append('<canvas id="image_grid" class="popup popped" style="background:white;width:300px;height:300px;" width="300" height="300"></canvas>');
+        var canvas = $('#image_grid')[0].getContext('2d');
+        canvas.restore();
+        this.modules.labels.getImageGrid(canvas);
+    }
 
     return { App: App, Plugins : {}, COLOURS : ["rgba(255,0,0,1)", "rgba(0,128,0,1)", "rgba(192,192,192,1)", "rgba(255,255,0,1)", "rgba(255,255,255,1)", "rgba(128,0,128,1)", "rgba(128,128,128,1)","rgba(128,0,0,1)", "rgba(0,0,204,1)", "rgba(159,255,159,1)", "rgba(255,157,206,1)", "rgba(179,102,255,1)"], SHAPES : ["circle", "square", "triangle", "star"], MAP_SHAPES : ["o","s","t","x"]};
 })();
