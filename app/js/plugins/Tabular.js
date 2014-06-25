@@ -12,11 +12,15 @@ Stephano.Plugins.Tabular = function(div, cfg){
 
     this.load(cfg.datasource);
 
-
-    $('#content').on('selected', function(evt)
+    $(document.body).on('selected', function(evt)
     {
         var nids = evt.nodeIds;
-        ctx.load(ctx.baseURL, nids);
+
+        if( evt.target == document.body )
+        {
+            $('tbody tr', this.jqele).hide();
+            $('#' + nids.join(', #'), this.jqele).show();
+        }
     });
 };
 
@@ -72,11 +76,11 @@ Stephano.Plugins.Tabular.prototype = {
             hrow = hrow + k + '</th><th>';
         }
         hrow = hrow.substring(0, hrow.length - 4) + '</tr>';
-        jqele.append(hrow);
+        $('thead', jqele).append(hrow);
     },
     drawrow: function(jqele, data)
     {
-        var str = '<tr><td>';
+        var str = '<tr id="' + data['Isolate'] + '"><td>';
         for(var fld in data)
         {
             if(data[fld] && data[fld] != 'None')
@@ -85,14 +89,14 @@ Stephano.Plugins.Tabular.prototype = {
                 str = str + '&nbsp;</td><td>';
         }
         str = str.substring(0, str.length - 4) + '</tr>';
-        jqele.append(str);
+        $('tbody', jqele).append(str);
     },
     drawTable : function(jqele, data)
     {
         var len = data.length;
 
         this.jqele.css('overflow', 'auto');
-        this.jqele.append('<table class="table table-bordered table-hover"></table>');
+        this.jqele.append('<table class="table table-bordered table-hover"><thead></thead><tbody></tbody></table>');
 
         var jq = $('table', this.jqele);
 
@@ -105,12 +109,5 @@ Stephano.Plugins.Tabular.prototype = {
 
         var ctx = this;
 
-        /*$('th',jq).click(function(evt){
-            var field = $(evt.target).text().trim();
-            $(ctx.jqele).trigger({
-                type : 'colour',
-                field : field
-            });
-        });*/
     }
 };
