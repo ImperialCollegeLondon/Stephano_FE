@@ -1,5 +1,5 @@
 Stephano.Plugins.PhyloCanvas = (function(){
-    var PCanvas = function(div, conf){
+    var PCanvas = function(div, conf, app){
         /**
          * Check for jQuery
          */

@@ -1,6 +1,6 @@
 //Array.join most efficient method of string concatenation;
 // -- might be worth testing!
-Stephano.Plugins.labeler = function(div, conf){
+Stephano.Plugins.labeler = function(div, conf, app){
     this.jqele = $(div);
     this.jqele.addClass('labeler');
 

@@ -1,27 +1,37 @@
 //Array.join most efficient method of string concatenation;
 // -- might be worth testing!
-Stephano.Plugins.Tabular = function(div, cfg){
+Stephano.Plugins.Tabular = function(div, cfg, app){
     this.columns = [];
     this.jqele = $(div);
-
+    this.app = app;
     this.jqele.addClass('tabular');
 
     $(div).html('waiting for data');
-
-    var ctx = this;
 
     this.load(cfg.datasource);
 
     $(document.body).on('selected', function(evt)
     {
-        var nids = evt.nodeIds;
+        if(evt.target != document.body) { return false; }
 
-        if( evt.target == document.body )
+        var nids = evt.nodeIds;
+        $('tbody tr', this.jqele).hide();
+
+        if( nids.length )
         {
-            $('tbody tr', this.jqele).hide();
+
             $('#' + nids.join(', #'), this.jqele).show();
         }
-    });
+        else if( this.app.subset.length )
+        {
+
+            $('#' + this.app.subset.join(', #'), this.jqele).show();
+        }
+        else
+        {
+            $('tbody tr', this.jqele).show();
+        }
+    }.bind(this));
 };
 
 Stephano.Plugins.Tabular.prototype = {

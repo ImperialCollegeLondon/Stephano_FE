@@ -6,6 +6,8 @@ var Stephano = (function(){
         this.setHeader();
         this.modules = {};
 
+        this.subset = [];
+
         var qry =this.parseQuery();
         dataset = qry.dataset
 
@@ -36,6 +38,14 @@ var Stephano = (function(){
             {
                 this.setSizesFromWest.call(this, evt, ui);
             }
+        }.bind(this));
+
+        $(document.body).on('subset', function(evt){
+            this.subset = evt.nodeIds;
+        }.bind(this));
+
+        $(document.body).on('unsubset', function(evt){
+            this.subset = [];
         }.bind(this));
     };
 
@@ -120,7 +130,7 @@ var Stephano = (function(){
 
         if(cfg.length === 1)
         {
-            this.modules[cfg[0].id] = this.loadPlugin(panel, cfg[0]);
+            this.modules[cfg[0].id] = this.loadPlugin(panel, cfg[0], this);
         }
         else
         {
@@ -135,7 +145,7 @@ var Stephano = (function(){
 
         for( var c = 0; c < config.length; c++ )
         {
-            this.modules[config[c].id] = this.loadPlugin(panel, config[c]);
+            this.modules[config[c].id] = this.loadPlugin(panel, config[c], this);
         }
 
         $('.tab-list .tab:first', panel).click();
@@ -220,7 +230,7 @@ var Stephano = (function(){
         }
 
         var Plugin = Stephano.Plugins[cfg.type],
-            instance = new Plugin($('#' + cfg.id), cfg);
+            instance = new Plugin($('#' + cfg.id), cfg, app);
 
         return instance;
 
