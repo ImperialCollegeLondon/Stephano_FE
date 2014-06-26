@@ -39,18 +39,19 @@ Stephano.Plugins.PhyloCanvas = (function(){
         var phy = this.phylo;
         phy.navigator = false;
         phy.history_collapsed = true;
+        phy.backcolour = true;
 
         phy.load(conf.datasource);
 
         $('#ns_slider').slider({
             min : 0,
-            max: 10,
+            max: 20,
             step : 0.1,
             slide : function(evt, ui)
             {
                 phy.setNodeSize(ui.value);
             },
-            value : 0.5
+            value : 1
         });
 
         $('#ls_slider').slider({
@@ -87,8 +88,8 @@ Stephano.Plugins.PhyloCanvas = (function(){
         }
 
         this.phylo.showLabels = false;
-        this.phylo.baseNodeSize = 0.5;
-        this.phylo.selectedNodeSizeIncrease = 0.5;
+        this.phylo.baseNodeSize = 1;
+        this.phylo.selectedNodeSizeIncrease = 0;
         this.phylo.selectedColor = "rgba(255,128,50,1)";
         this.phylo.rightClickZoom = true;
 
@@ -136,22 +137,26 @@ Stephano.Plugins.PhyloCanvas = (function(){
         {
             plo.setColourAndShape(evt.ids, evt.colour, evt.shape);
         });
-//
-//        $(document.body).on('selected', function(evt)
-//        {
-//            if(evt.source != 'phylocanvas')
-//            {   console.debug('NO!');
-//                plo.phylo.selectNodes(evt.nodeIds);
-//            }
-//        });
+
+        $(document.body).on('selected', function(evt)
+        {
+            if(evt.target == document.body && evt.source != 'phylocanvas')
+            {
+                console.debug('no!')
+               plo.phylo.selectNodes(evt.nodeIds);
+            }
+        });
 
         $(document.body).on('relabel', function(evt)
         {
 
             var data = evt.stuff;
 
+            console.debug(data);
+
             for(var k in data)
             {
+                if( k == 'vals' ) continue;
                 for(var i = data[k].length; i--; )
                 {
                     if(plo.phylo.branches[data[k][i]]) plo.phylo.branches[data[k][i]].label = k;
@@ -159,6 +164,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
             }
 
             plo.phylo.displayLabels();
+            plo.phylo.draw();
         });
 
         $('.rect', div).click(function(evt){
