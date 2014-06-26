@@ -59,11 +59,11 @@ Stephano.Plugins.labeler.prototype.drawControls = function(data_)
 
                 if ( data[i].type == "label" )
                 {
-                    $('.' + grp_cls, l_div).append('<button class="btn ' + (data[i].name == this.conf.colourField ? 'selected' : '') + '" id="' + data[i].name + '">' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</button>');
+                    $('.' + grp_cls, l_div).append('<button class="btn ' + (data[i].name == this.conf.colourField ? 'selected' : '') + '" id="' + data[i].name + '" gismoh-label_type="' + data[i].type + '">' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</button>');
                 }
                 else
                 {
-                    $('.' + grp_cls, c_div).append('<button class="btn ' + (data[i].name == this.conf.colourField ? 'selected' : '') + '" id="' +  data[i].name + '" >' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</button>');
+                    $('.' + grp_cls, c_div).append('<button class="btn ' + (data[i].name == this.conf.colourField ? 'selected' : '') + '" id="' +  data[i].name + '"  gismoh-label_type="' + data[i].type + '">' + data[i].label + (data[i].name == this.conf.colourField ? '<div class="icon-map-marker icon-white pull-right"></div>' : '') +'</button>');
                 }
             }
 
@@ -83,7 +83,9 @@ Stephano.Plugins.labeler.prototype.drawControls = function(data_)
 Stephano.Plugins.labeler.prototype.clickHandler = function(evt)
 {
     var field_id = evt.target.id,
+        field_type = evt.target.getAttribute('gismoh-label_type');
         obj = this.fields[field_id],
+        obj.type = field_type;
         btn = $(evt.target);
 
     $('.selected', btn.parents('.group')).removeClass('selected');
@@ -122,11 +124,13 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
                 {
                     olpar.removeClass('btn-primary');
                 }
+
                 $(document.body).trigger({
                     type : 'relabel',
                     stuff : data,
                     field : obj.name
                 });
+
                 $('#' + ctx.jqele.attr('id') +'_' + obj.name ).addClass('btn-primary').append('<div class="icon-tag icon-white pull-right"></div>');
             });
 
