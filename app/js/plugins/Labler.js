@@ -159,6 +159,8 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
 
                 for(var key in data)
                 {
+                    if(key == "") continue;
+
                     var colour = Stephano.COLOURS[i % c_length],
                         shape = Stephano.SHAPES[Math.round(i/c_length) % s_length],
                         map_shape = Stephano.MAP_SHAPES[Math.round(i/c_length) % s_length];

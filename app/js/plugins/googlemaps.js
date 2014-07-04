@@ -219,6 +219,8 @@ Stephano.Plugins.googlemaps.prototype = {
 
                 for(var i = 0; i < feats.length; i++)
                 {
+                    if(!feats[i].geometry.coordinates) continue;
+
                     var pos = feats[i].geometry.coordinates,
                         iconSize = new google.maps.Size(13, 18),
                         iconOrigin = new google.maps.Point(0,0),
