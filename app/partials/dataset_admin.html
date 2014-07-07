@@ -1,0 +1,24 @@
+<button type="button" class="primary">Add a Dataset</button>
+<form class="dataset-form">
+	<label for="choose_dataset">Choose a Dataset: </label>
+	<select ng-model="current_dataset_name" ng-options="dataset for dataset in datasets" ng-change="getDatasetConfig()">
+		<option value=""> -- Choose Dataset -- </option>
+	</select>
+
+	<input ng-model="current_dataset_name" />
+
+	<input type="file" filelist-bind name="meta" />
+	<table>
+		<thead>
+			<tr>
+				<th ng-repeat="(field, value) in metadata[0]">{{field}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="row in metadata">
+				<td ng-repeat="(key, value) in row">{{value}}</td>
+			</tr>
+		</tbody>
+		<input type="file" filelist-bind name="tree" />
+	</table>
+</form>

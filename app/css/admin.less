@@ -1,0 +1,66 @@
+@import "../bower_components/bootstrap/less/bootstrap.less";
+
+/* additonal classes for admin css */
+
+body
+{
+	position: relative;
+	margin : auto;
+	padding: 1em;
+}
+
+button
+{
+	.btn;
+}
+
+header
+{
+	margin: -1em -1em 1em; ;
+}
+
+select, input
+{
+	.form-control;
+}
+
+.admin-body
+{
+	.container;
+}
+
+
+.admin-settings
+{
+	.make-sm-column(4);
+}
+
+.page-body
+{
+	display: flex;
+}
+
+.admin-sections
+{
+	.make-sm-column(3);
+
+	a
+	{
+		.btn;
+
+		&.selected
+		{
+			.btn-primary;
+		}
+	}
+}
+
+.settings
+{
+	flex : 1;
+	width : 85%;
+	vertical-align: top;
+	box-sizing : border-box;
+	border: 1px solid #EEE;
+	margin: 0;
+}

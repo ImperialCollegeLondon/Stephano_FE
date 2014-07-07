@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="StephanoAdmin">
+	<head>
+		<title>Stephano Administration</title>
+		<!--build:css css/stephano_admin.css-->
+		<link rel="stylesheet" type="text/css" href="/.tmp/css/main.css" />
+		<link rel="stylesheet" type="text/css" href="/.tmp/css/admin.css" />
+		<!--endbuild-->
+	</head>
+	<body>
+		<header>
+		</header>
+		<div class="admin-body">
+			<div class="">
+				<nav class="admin-sections" ng-controller="AdminSections">
+					<a class="btn" ng-repeat="section in sections" href="#/{{section.name| lowercase }}" ng-class="{ selected: getDisplayClass(section.name) }">{{section.name}}</a>
+				</nav>
+				<section ng-view class="admin-settings"></section>
+			</div>
+		</div>
+
+		<!--build:js js/stephano.js-->
+		<script src="/bower_components/angular/angular.js"></script>
+		<script src="/bower_components/angular-route/angular-route.js"></script>
+		<script src="/js/admin-view.js"></script>
+		<script src="/js/admin-controller.js"></script>
+		<!--endbuild-->
+	</body>
+</html>
