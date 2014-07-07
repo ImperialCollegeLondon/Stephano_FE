@@ -207,6 +207,8 @@ Stephano.Plugins.labeler.prototype.relabel = function(obj)
                 for( var raw_key in data )
                 {
                     var key;
+
+                    if(raw_key == "") continue;
                     if(raw_key == '1')
                     {
                       key = 'positive';
