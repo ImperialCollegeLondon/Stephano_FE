@@ -142,7 +142,6 @@ Stephano.Plugins.PhyloCanvas = (function(){
         {
             if(evt.target == document.body && evt.source != 'phylocanvas')
             {
-                console.debug('no!')
                plo.phylo.selectNodes(evt.nodeIds);
             }
         });

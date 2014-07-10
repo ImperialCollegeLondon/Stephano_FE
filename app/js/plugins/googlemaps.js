@@ -47,6 +47,10 @@ Stephano.Plugins.googlemaps = function(div, conf){
 
     this.iBubble = new google.maps.InfoWindow();
 
+    google.maps.event.addListener(this.iBubble,'closeclick',function(){
+        this.clearFilter();
+    }.bind(this));
+
     if(conf.cluster)
     {
         this.clusterer = new MarkerClusterer(this.map, this.markers,
@@ -95,7 +99,7 @@ Stephano.Plugins.googlemaps = function(div, conf){
     {
         var nids = evt.nodeIds;
 
-        if(! evt.source) return;
+        if(! evt.source || evt.source == 'googlemaps') return;
 
         if(!nids || nids == '')
         {
@@ -147,6 +151,7 @@ Stephano.Plugins.googlemaps = function(div, conf){
         gmp.superFilter = true;
         gmp.clearFilter();
     });
+
 };
 
 Stephano.Plugins.googlemaps.prototype = {
@@ -285,6 +290,8 @@ Stephano.Plugins.googlemaps.prototype = {
             }
             bubblestring = bubblestring + '</ul>';
 
+            ctx.filterById(mkr.ids);
+
             ctx.iBubble.setContent(bubblestring);
             ctx.iBubble.setPosition(mkr.getPosition());
             ctx.iBubble.open(ctx.map);
@@ -331,10 +338,6 @@ Stephano.Plugins.googlemaps.prototype = {
                         this.markers[this.markerIds[ids[i]]][field] = 'both';
                         icon.origin = new google.maps.Point(0, 3 * 18);
                     }
-
-
-
-
                 }
                 // end of binary colouring code
                 else
@@ -354,4 +357,22 @@ Stephano.Plugins.googlemaps.prototype = {
         }
         if(this.clusterer) this.clusterer.repaint();
     }
+};
+
+Stephano.Plugins.googlemaps.prototype.filterById = function(mkrIds)
+{
+    $(document.body).trigger({
+        type : 'selected',
+        nodeIds : mkrIds,
+        source : 'googlemaps'
+    });
+};
+
+Stephano.Plugins.googlemaps.prototype.clearFilter = function()
+{
+    $(document.body).trigger({
+        type : 'selected',
+        nodeIds : [],
+        source : 'googlemaps'
+    });
 };
