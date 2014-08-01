@@ -22,7 +22,9 @@ Stephano.Plugins.PhyloCanvas = (function(){
         /**
          * Resize event
          */
-       div.parent().on('stephano_resize', this.resize_handler.bind(this));
+
+         var ctx = this;
+
 
         div.html('<div style="position:absolute;bottom:3em;height:1em;left:0;padding:0.2em;z-index:100;">Node size :   <div id="ns_slider" style="display: inline-block;width:18em;"></div></div><div style="position:absolute;bottom:1.5em;height:1em;left:0;padding:0.2em;z-index:100;">  Label size : <div id="ls_slider" style="display: inline-block;width:18em;"></div> </div><div class="pc-toolbar"><button type="button" class="reset btn">Redraw original tree</button><button type="button" class="labels btn" name="labels" >Show Labels</button>' +
                     '<div class="btn-group">'+
@@ -42,6 +44,8 @@ Stephano.Plugins.PhyloCanvas = (function(){
         phy.backcolour = true;
 
         phy.load(conf.datasource);
+
+        div.parent().on('stephano_resize', this.resize_handler.bind(ctx));
 
         $('#ns_slider').slider({
             min : 0,
@@ -151,8 +155,6 @@ Stephano.Plugins.PhyloCanvas = (function(){
 
             var data = evt.stuff;
 
-            console.debug(data);
-
             for(var k in data)
             {
                 if( k == 'vals' ) continue;
@@ -222,6 +224,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
 
     PCanvas.prototype.resize_handler = function(evt)
     {
+
         var emt = this.div.parent();
         this.phylo.setSize(emt.innerWidth() - 4, emt.innerHeight() - 4);
     }
