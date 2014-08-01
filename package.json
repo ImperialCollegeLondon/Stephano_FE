@@ -1,7 +1,7 @@
 {
   "name": "Stephano_FE",
   "author": "Chris Powell",
-  "version": "1.0.0-26",
+  "version": "1.0.0-27",
   "repository": "https://github.com/ImperialCollegeLondon/Stephano_FE.git",
   "main": "index.html",
   "dependencies": {
