@@ -45,7 +45,7 @@ Stephano.Plugins.PhyloCanvas = (function(){
 
         phy.load(conf.datasource);
 
-        div.parent().on('stephano_resize', this.resize_handler.bind(ctx));
+        div.parent().on('stephano_resize', this.resize_handler.bind(this));
 
         $('#ns_slider').slider({
             min : 0,
