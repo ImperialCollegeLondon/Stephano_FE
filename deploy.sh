@@ -11,6 +11,6 @@ grunt build
 
 git add dist && git commit -m "build"
 git subtree split --prefix dist -b builds
-git push deploy builds:master
+git push deploy dist:dist
 
 umount ~/WD1
