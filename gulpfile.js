@@ -1,40 +1,30 @@
 var gulp = require('gulp');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var reactify = require('reactify');
-var htmlMinifier = require('gulp-html-minifier');
 var uglify = require('gulp-uglify');
-var stripDebug = require('gulp-strip-debug');
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
 var rename = require('gulp-rename');
+var concat = require('gulp-concat');
 
-gulp.task('browserify', function () {
-  return browserify('./private/js/stephano.js')
-        .transform(reactify)
-        .bundle()
-        .pipe(source('stephano.js'))
-        .pipe(buffer())
-        .pipe(uglify())
-        .pipe(stripDebug())
-        .pipe(rename('snapterest.js'))
-        .pipe(gulp.dest('./public/js'));
+gulp.task('js', function() {
+  return gulp.src(['./app/js/**/*.js'])
+      .pipe(concat('stephano.js'))
+      .pipe(uglify())
+      .pipe(gulp.dest('./dist/js/'));
 });
 
 gulp.task('less', function() {
-  return gulp.src('./private/less/main.less')
+  return gulp.src('./app/css/main.less')
         .pipe(less())
         .pipe(minifyCSS())
-        .pipe(rename('snapterest.css'))
-        .pipe(gulp.dest('./public/css'));
+        .pipe(rename('stephano.css'))
+        .pipe(gulp.dest('./dist/css/'));
 });
 
 gulp.task('watch', function () {
-  gulp.watch('./private/js/**/*.js', ['browserify']);
-  gulp.watch('./private/less/**/*.less', ['less']);
+  gulp.watch('./app/js/**/*.js', ['js']);
+  gulp.watch('./app/css/**/*.less', ['less']);
 
 });
 
-gulp.task('build', ['browserify', 'less']);
-gulp.task('default', ['watch', 'browserify', 'less']);
+gulp.task('build', ['js', 'less']);
+gulp.task('default', ['watch', 'js', 'less']);
