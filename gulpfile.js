@@ -8,7 +8,7 @@ var concat = require('gulp-concat');
 gulp.task('js', function() {
   return gulp.src(['./app/js/**/*.js'])
       .pipe(concat('stephano.js'))
-      .pipe(uglify())
+      //.pipe(uglify())
       .pipe(gulp.dest('./dist/js/'));
 });
 
